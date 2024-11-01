@@ -1,0 +1,21 @@
+# GET all movies
+GET http://localhost:3000/movies
+
+###
+
+# POST a new movie
+POST http://localhost:3000/movies
+Content-Type: application/json
+
+{
+  "title": "Rambo",
+  "director": "Sylvester Stallone",
+  "year": 2008
+}
+
+###
+
+# GET a movie by ID
+GET http://localhost:3000/movies/1
+
+
