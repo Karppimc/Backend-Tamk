@@ -1,0 +1,43 @@
+# Get all students
+GET http://localhost:3000/students
+
+###
+
+# Get a specific student by ID
+GET http://localhost:3000/students/1
+
+###
+
+# Add a new student
+POST http://localhost:3000/students
+Content-Type: application/json
+
+{
+  "name": "Jere",
+  "age": 23,
+  "creditPoints": 110,
+  "campus": "Hervanta"
+}
+
+###
+
+# Update a student by ID
+PUT http://localhost:3000/students/1
+Content-Type: application/json
+
+{
+  "name": "Jani Updated",
+  "age": 22,
+  "creditPoints": 105,
+  "campus": "Kauppi"
+}
+
+###
+
+# Delete a student by ID
+DELETE http://localhost:3000/students/1
+
+###
+
+# Delete students by campus (option 2)
+DELETE http://localhost:3000/students/campus/Center
