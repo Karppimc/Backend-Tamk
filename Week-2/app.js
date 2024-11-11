@@ -1,83 +1,102 @@
 const express = require('express');
 const app = express();
+const morgan = require('morgan');
 const PORT = 3000;
+app.use(morgan('dev'));
 app.use(express.json());
 
-let students = [
-    { id: 1, name: "Jani", age: 21, creditPoints: 100, campus: "Kauppi"},
-    { id: 2, name: "Tuomas", age: 23, creditPoints: 140, campus: "Center"},
-    { id: 3, name: "Kalle", age: 22, creditPoints: 150, campus: "Hervanta"},
-    { id: 4, name: "Oskari", age: 25, creditPoints: 180, campus: "Center"},
-];
-
-app.get('/', (req, res) => {
-    const studentList = students.map(student => `<li>${student.name} ${student.age} ${student.creditPoints} ${student.campus}</li>`).join('');
-    res.send(`<ul>${studentList}</ul>`);
-});
-
-app.get('/students', (req, res) => {
-    res.json(students);
-});
-
-app.post('/students', (req, res) => {
-    const { name, age, creditPoints, campus } = req.body;
-    const newStudent = { id: students.length + 1, name, age, creditPoints, campus };
-    students.push(newStudent);
-    res.status(201).json(newStudent);
-});
-
-app.get('/students/:id', (req, res) => {
-    const studentId = parseInt(req.params.id, 10);
-    const student = students.find(s => s.id === studentId);
-    if (student) {
-        res.json(student);
-    } else {
-        res.status(404).send({ error: 'Student not found' });
-    }
-});
-
-app.put('/students/:id', (req, res) => {
-    const studentId = parseInt(req.params.id, 10);
-    const { name, age, creditPoints, campus } = req.body;
-    const student = students.find(s => s.id === studentId);
-
-    if (student) {
-        student.name = name !== undefined ? name : student.name;
-        student.age = age !== undefined ? age : student.age;
-        student.creditPoints = creditPoints !== undefined ? creditPoints : student.creditPoints;
-        student.campus = campus !== undefined ? campus : student.campus;
-        res.json(student);
-    } else {
-        res.status(404).send({ error: 'Student not found' });
-    }
-});
-
-// DELETE method to delete student
-app.delete('/students/:id', (req, res) => {
-    const studentId = parseInt(req.params.id, 10);
-    const studentIndex = students.findIndex(s => s.id === studentId);
-
-    if (studentIndex !== -1) {
-        const deletedStudent = students.splice(studentIndex, 1);
-        res.json(deletedStudent);
-    } else {
-        res.status(404).send({ error: 'Student not found' });
-    }
-});
-
-app.delete('/students/campus/:campus', (req, res) => {
-    const campus = req.params.campus;
-
-    const initialLength = students.length;
-    students = students.filter(student => student.campus !== campus);
-
-    if (students.length < initialLength) {
-        res.json({ message: `Students from campus ${campus} deleted` });
-    } else {
-        res.status(404).send({ error: `No students found from campus ${campus}` });
-    }
-});
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
+
+const movies = [
+    { id: 1, title: "Inception", director: "Christopher Nolan", year: 2010 },
+    { id: 2, title: "The Matrix", director: "The Wachowskis", year: 1999 },
+    { id: 3, title: "Parasite", director: "Bong Joon-ho", year: 2019 }
+  ];
+
+  app.get('/', (req, res) => {
+    const movieList = movies.map(movie => `<li>${movie.title} by ${movie.director} (${movie.year})</li>`).join('');
+    res.send(`<ul>${movieList}</ul>`);
+  });
+
+  app.get('/movies', (req, res) => {
+
+    const { title, director, year } = req.query;
+
+
+    let filteredMovies = movies;
+
+    if (title) {
+      filteredMovies = filteredMovies.filter(movie => movie.title.toLowerCase().includes(title.toLowerCase()));
+    }
+    if (director) {
+      filteredMovies = filteredMovies.filter(movie => movie.director.toLowerCase().includes(director.toLowerCase()));
+    }
+    if (year) {
+      filteredMovies = filteredMovies.filter(movie => movie.year === parseInt(year, 10));
+    }
+
+    res.json(filteredMovies);
+  });
+
+
+  app.post('/movies', (req, res) => {
+    const { title, director, year } = req.body;
+
+    if (!title || !director || !year || typeof year !== 'number' || year < 1888) {
+      return res.status(400).json({ error: 'Invalid data: title, director, and a valid year are required.' });
+    }
+
+    const newMovie = { id: movies.length + 1, title, director, year };
+    movies.push(newMovie);
+    res.status(201).json(newMovie); // 201 Created
+  });
+
+
+
+  app.get('/movies/:id', (req, res) => {
+    const movie = movies.find(m => m.id === parseInt(req.params.id));
+    if (movie) {
+      res.json(movie);
+    } else {
+      res.status(404).send('Movie not found');
+    }
+  });
+
+  app.put('/movies/:id', (req, res) => {
+    const movie = movies.find(m => m.id === parseInt(req.params.id));
+    if (!movie) {
+      return res.status(404).json({ error: 'Movie not found' });
+    }
+
+    const { title, director, year } = req.body;
+
+
+    if (!title || !director || !year || typeof year !== 'number' || year < 1888) {
+      return res.status(400).json({ error: 'Invalid data: title, director, and a valid year are required.' });
+    }
+
+
+    movie.title = title;
+    movie.director = director;
+    movie.year = year;
+    res.json(movie);
+  });
+
+
+
+  app.delete('/movies/:id', (req, res) => {
+    const index = movies.findIndex(m => m.id === parseInt(req.params.id));
+    if (index === -1) {
+      return res.status(404).send('Movie not found');
+    }
+    movies.splice(index, 1);
+    res.status(204).send();
+  });
+
+  app.use((req, res) => {
+    res.status(404).json({ error: 'Route not found' });
+  });
+

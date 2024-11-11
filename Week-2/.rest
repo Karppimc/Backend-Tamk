@@ -1,43 +1,122 @@
-# Get all students
-GET http://localhost:3000/students
+# GET all movies
+GET http://localhost:3000/movies
 
 ###
 
-# Get a specific student by ID
-GET http://localhost:3000/students/1
-
-###
-
-# Add a new student
-POST http://localhost:3000/students
+# POST a new movie - Valid data
+POST http://localhost:3000/movies
 Content-Type: application/json
 
 {
-  "name": "Jere",
-  "age": 23,
-  "creditPoints": 110,
-  "campus": "Hervanta"
+  "title": "Rambo",
+  "director": "Sylvester Stallone",
+  "year": 2008
 }
 
 ###
 
-# Update a student by ID
-PUT http://localhost:3000/students/1
+# POST a new movie - Missing title (should return 400 Bad Request)
+POST http://localhost:3000/movies
 Content-Type: application/json
 
 {
-  "name": "Jani Updated",
-  "age": 22,
-  "creditPoints": 105,
-  "campus": "Kauppi"
+  "director": "Christopher Nolan",
+  "year": 2020
 }
 
 ###
 
-# Delete a student by ID
-DELETE http://localhost:3000/students/1
+# POST a new movie - Invalid year (should return 400 Bad Request)
+POST http://localhost:3000/movies
+Content-Type: application/json
+
+{
+  "title": "Unknown Movie",
+  "director": "Director Name",
+  "year": 1800
+}
 
 ###
 
-# Delete students by campus (option 2)
-DELETE http://localhost:3000/students/campus/Center
+# GET a movie by ID - Existing ID
+GET http://localhost:3000/movies/1
+
+###
+
+# GET a movie by ID - Non-existent ID (should return 404 Not Found)
+GET http://localhost:3000/movies/999
+
+###
+
+# PUT Update a movie - Valid update
+PUT http://localhost:3000/movies/1
+Content-Type: application/json
+
+{
+  "title": "Inception - Updated",
+  "director": "Christopher Nolan",
+  "year": 2010
+}
+
+###
+
+# PUT Update a movie - Non-existent ID (should return 404 Not Found)
+PUT http://localhost:3000/movies/999
+Content-Type: application/json
+
+{
+  "title": "Nonexistent Movie",
+  "director": "Unknown Director",
+  "year": 2020
+}
+
+###
+
+# PUT Update a movie - Invalid data (should return 400 Bad Request)
+PUT http://localhost:3000/movies/1
+Content-Type: application/json
+
+{
+  "title": "",
+  "director": "Some Director",
+  "year": 1800
+}
+
+###
+
+# DELETE a movie by ID - Existing ID
+DELETE http://localhost:3000/movies/1
+
+###
+
+# DELETE a movie by ID - Non-existent ID (should return 404 Not Found)
+DELETE http://localhost:3000/movies/999
+
+###
+# GET all movies (no filters)
+GET http://localhost:3000/movies
+
+###
+
+# GET movies from the year 2010
+GET http://localhost:3000/movies?year=2010
+
+###
+
+# GET movies directed by Christopher Nolan
+GET http://localhost:3000/movies?director=Christopher Nolan
+
+###
+
+# GET movies with title containing "Inception"
+GET http://localhost:3000/movies?title=Inception
+
+###
+
+# GET movies from the year 2010 directed by Christopher Nolan
+GET http://localhost:3000/movies?year=2010&director=Christopher Nolan
+
+###
+
+# GET movies with title containing "Matrix" and from the year 1999
+GET http://localhost:3000/movies?title=Matrix&year=1999
