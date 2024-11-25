@@ -15,12 +15,14 @@ Content-Type: application/json
 
 ###
 
-# POST a new movie - Missing title (should return 400 Bad Request)
+# POST a new movie
 POST http://localhost:3000/movies
 Content-Type: application/json
 
 {
-  "director": "Christopher Nolan",
+
+  "title": "Test movie",
+  "director": "Test",
   "year": 2020
 }
 
@@ -49,7 +51,7 @@ GET http://localhost:3000/movies/999
 ###
 
 # PUT Update a movie - Valid update
-PUT http://localhost:3000/movies/1
+PUT http://localhost:3000/movies/673c4f96bdcaddf244883b67
 Content-Type: application/json
 
 {
@@ -85,7 +87,7 @@ Content-Type: application/json
 ###
 
 # DELETE a movie by ID - Existing ID
-DELETE http://localhost:3000/movies/1
+DELETE http://localhost:3000/movies/673c4f96bdcaddf244883b67
 
 ###
 
