@@ -1,0 +1,130 @@
+# GET all movies
+GET http://localhost:3000/movies
+
+###
+
+# POST a new movie - Valid data
+POST http://localhost:3000/movies
+Content-Type: application/json
+Authorization: Bearer <your-token>
+
+{
+  "title": "Rambo",
+  "director": "Sylvester Stallone",
+  "year": 2008
+}
+
+###
+
+# POST a new movie - Invalid year (should return 400 Bad Request)
+POST http://localhost:3000/movies
+Content-Type: application/json
+Authorization: Bearer <your-token>
+
+{
+  "title": "Unknown Movie",
+  "director": "Director Name",
+  "year": 1800
+}
+
+###
+
+# GET a movie by ID - Replace with an actual existing MongoDB _id
+GET http://localhost:3000/movies/673c4f96bdcaddf244883b68
+
+###
+
+# GET a movie by ID - Non-existent ID (should return 404 Not Found)
+GET http://localhost:3000/movies/000000000000000000000000
+
+###
+
+# PUT Update a movie - Replace with an actual existing MongoDB _id
+PUT http://localhost:3000/movies/674474e263f26a819fb80513
+Content-Type: application/json
+Authorization: Bearer <your-token>
+
+{
+  "title": "Inception - Updated",
+  "director": "Christopher Nolan",
+  "year": 2010
+}
+
+###
+
+# PUT Update a movie - Invalid data (should return 400 Bad Request)
+PUT http://localhost:3000/movies/674474e263f26a819fb80513
+Content-Type: application/json
+Authorization: Bearer <your-token>
+
+{
+  "title": "",
+  "director": "Some Director",
+  "year": 1800
+}
+
+###
+
+# DELETE a movie by ID - Replace with an actual existing MongoDB _id
+DELETE http://localhost:3000/movies/67458d595b0ec3b73378186e
+Authorization: Bearer <your-token>
+
+###
+
+# DELETE a movie by ID - Non-existent ID (should return 404 Not Found)
+DELETE http://localhost:3000/movies/000000000000000000000000
+Authorization: Bearer <your-token>
+
+###
+
+# GET all movies (no filters)
+GET http://localhost:3000/movies
+
+###
+
+# GET movies from the year 2010
+GET http://localhost:3000/movies?year=2010
+
+###
+
+# GET movies directed by Christopher Nolan
+GET http://localhost:3000/movies?director=Christopher Nolan
+
+###
+
+# GET movies with title containing "Inception"
+GET http://localhost:3000/movies?title=Inception
+
+###
+
+# Login Request - Valid Credentials
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+###
+
+# Login Request - Invalid Password
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "wrongpassword"
+}
+
+###
+
+# Login Request - Non-existent User
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "username": "unknown",
+  "password": "admin123"
+}
+
