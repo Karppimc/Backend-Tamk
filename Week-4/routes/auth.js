@@ -1,9 +1,9 @@
 const express = require('express');
-const { login } = require('../controllers/authController'); // Destructure login from authController
+const { login, register } = require('../controllers/authController'); // Correct import
+
 const router = express.Router();
 
-router.post('/login', login); // Use login directly
+router.post('/register', register); // Use register for user registration
+router.post('/login', login); // Use login for user authentication
 
-module.exports = router;
-
-
+module.exports = router; // Export the router
