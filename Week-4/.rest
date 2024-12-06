@@ -1,115 +1,4 @@
-# GET all movies
-GET http://localhost:3000/movies
-
-###
-
-# POST a new movie - Valid data
-POST http://localhost:3000/movies
-Content-Type: application/json
-Authorization: Bearer <your-token>
-
-{
-  "title": "Rambo",
-  "director": "Sylvester Stallone",
-  "year": 2008
-}
-
-###
-
-# POST a new movie - Invalid year (should return 400 Bad Request)
-POST http://localhost:3000/movies
-Content-Type: application/json
-Authorization: Bearer <your-token>
-
-{
-  "title": "Unknown Movie",
-  "director": "Director Name",
-  "year": 1800
-}
-
-###
-
-# GET a movie by ID - Replace with an actual existing MongoDB _id
-GET http://localhost:3000/movies/673c4f96bdcaddf244883b68
-
-###
-
-# GET a movie by ID - Non-existent ID (should return 404 Not Found)
-GET http://localhost:3000/movies/000000000000000000000000
-
-###
-
-# PUT Update a movie - Replace with an actual existing MongoDB _id
-PUT http://localhost:3000/movies/674474e263f26a819fb80513
-Content-Type: application/json
-Authorization: Bearer <your-token>
-
-{
-  "title": "Inception - Updated",
-  "director": "Christopher Nolan",
-  "year": 2010
-}
-
-###
-
-# PUT Update a movie - Invalid data (should return 400 Bad Request)
-PUT http://localhost:3000/movies/674474e263f26a819fb80513
-Content-Type: application/json
-Authorization: Bearer <your-token>
-
-{
-  "title": "",
-  "director": "Some Director",
-  "year": 1800
-}
-
-###
-
-# DELETE a movie by ID - Replace with an actual existing MongoDB _id
-DELETE http://localhost:3000/movies/67458d595b0ec3b73378186e
-Authorization: Bearer <your-token>
-
-###
-
-# DELETE a movie by ID - Non-existent ID (should return 404 Not Found)
-DELETE http://localhost:3000/movies/000000000000000000000000
-Authorization: Bearer <your-token>
-
-###
-
-# GET all movies (no filters)
-GET http://localhost:3000/movies
-
-###
-
-# GET movies from the year 2010
-GET http://localhost:3000/movies?year=2010
-
-###
-
-# GET movies directed by Christopher Nolan
-GET http://localhost:3000/movies?director=Christopher Nolan
-
-###
-
-# GET movies with title containing "Inception"
-GET http://localhost:3000/movies?title=Inception
-
-###
-
-# Login Request - Valid Credentials
-POST http://localhost:3000/auth/login
-Content-Type: application/json
-
-{
-  "username": "admin",
-  "password": "admin1234"
-}
-
-
-###
-
-# Register Request - Admin
+### 1. Register Admin User
 POST http://localhost:3000/auth/register
 Content-Type: application/json
 
@@ -118,3 +7,122 @@ Content-Type: application/json
   "password": "admin1234",
   "role": "admin"
 }
+
+###
+
+### 2. Register Regular User
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "username": "regularuser",
+  "password": "password123",
+  "role": "regular"
+}
+
+###
+
+### 3. Login as Admin
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin1234"
+}
+
+###
+
+### 4. Login as Regular User
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "username": "regularuser",
+  "password": "password123"
+}
+
+###
+
+### 5. Get All Movies (Admin Token)
+GET http://localhost:3000/movies
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTMwZmViNzFjZjg5MTI4ZTZlMTdkYyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczMzQ5NzA0OSwiZXhwIjoxNzMzNTAwNjQ5fQ.xDQF5cLqu6iDJwj4S5yrahgo9kpp7NpG3hz8ye1_ELM
+
+###
+
+### 6. Get All Movies (Regular User Token)
+GET http://localhost:3000/movies
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTMxMGNhZTk2NDNkZDMzZjljZDhlMSIsInJvbGUiOiJyZWd1bGFyIiwiaWF0IjoxNzMzNDk3MDgyLCJleHAiOjE3MzM1MDA2ODJ9.XW1PtJ8NNeKq1jMrBYnK-_QkGB8tY4klGpjeRlB1TWQ
+
+###
+
+### 7. Add a New Movie (Admin Only)
+POST http://localhost:3000/movies
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTMwZmViNzFjZjg5MTI4ZTZlMTdkYyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczMzQ5NzA0OSwiZXhwIjoxNzMzNTAwNjQ5fQ.xDQF5cLqu6iDJwj4S5yrahgo9kpp7NpG3hz8ye1_ELM
+
+{
+  "title": "Rocky",
+  "director": "John G. Avildsen",
+  "year": 1997
+}
+
+###
+
+### 8. Attempt to Add a New Movie (Regular User - Should Fail)
+POST http://localhost:3000/movies
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTMxMGNhZTk2NDNkZDMzZjljZDhlMSIsInJvbGUiOiJyZWd1bGFyIiwiaWF0IjoxNzMzNDk3MDgyLCJleHAiOjE3MzM1MDA2ODJ9.XW1PtJ8NNeKq1jMrBYnK-_QkGB8tY4klGpjeRlB1TWQ
+
+{
+  "title": "Inception",
+  "director": "Christopher Nolan",
+  "year": 2010
+}
+
+###
+
+### 9. Update a Movie (Admin Only)
+# Replace <movie_id_here> with an actual movie ID
+PUT http://localhost:3000/movies/6745d4a13239d2c4d62e8a07
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTMwZmViNzFjZjg5MTI4ZTZlMTdkYyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczMzQ5NzA0OSwiZXhwIjoxNzMzNTAwNjQ5fQ.xDQF5cLqu6iDJwj4S5yrahgo9kpp7NpG3hz8ye1_ELM
+
+{
+  "title": "The Matrix Reloaded",
+  "director": "The Wachowskis",
+  "year": 2003
+}
+
+###
+
+### 10. Attempt to Update a Movie (Regular User - Should Fail)
+# Replace <movie_id_here> with an actual movie ID
+PUT http://localhost:3000/movies/6745d4a13239d2c4d62e8a07
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTMxMGNhZTk2NDNkZDMzZjljZDhlMSIsInJvbGUiOiJyZWd1bGFyIiwiaWF0IjoxNzMzNDk3MDgyLCJleHAiOjE3MzM1MDA2ODJ9.XW1PtJ8NNeKq1jMrBYnK-_QkGB8tY4klGpjeRlB1TWQ
+
+{
+  "title": "Interstellar",
+  "director": "Christopher Nolan",
+  "year": 2014
+}
+
+###
+
+### 11. Delete a Movie (Admin Only)
+# Replace <movie_id_here> with an actual movie ID
+DELETE http://localhost:3000/movies/6745d4a13239d2c4d62e8a07
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTMwZmViNzFjZjg5MTI4ZTZlMTdkYyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczMzQ5NzA0OSwiZXhwIjoxNzMzNTAwNjQ5fQ.xDQF5cLqu6iDJwj4S5yrahgo9kpp7NpG3hz8ye1_ELM
+
+###
+
+### 12. Attempt to Delete a Movie (Regular User - Should Fail)
+# Replace <movie_id_here> with an actual movie ID
+DELETE http://localhost:3000/movies/<movie_id_here>
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTMxMGNhZTk2NDNkZDMzZjljZDhlMSIsInJvbGUiOiJyZWd1bGFyIiwiaWF0IjoxNzMzNDk3MDgyLCJleHAiOjE3MzM1MDA2ODJ9.XW1PtJ8NNeKq1jMrBYnK-_QkGB8tY4klGpjeRlB1TWQ
+
+###
+
+### 13. Access Without Token (Should Fail)
+GET http://localhost:3000/movies

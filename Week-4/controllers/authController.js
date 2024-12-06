@@ -13,16 +13,15 @@ const login = async (req, res) => {
             return res.status(400).json({ error: 'Invalid username or password' });
         }
 
+        // Compare plaintext passwords
         console.log('Password provided:', password);
         console.log('Password stored:', user.password);
 
-        const isMatch = await bcrypt.compare(password, user.password);
-        console.log('Password match:', isMatch);
-
-        if (!isMatch) {
+        if (user.password !== password) {
             return res.status(400).json({ error: 'Invalid username or password' });
         }
 
+        // Generate JWT token
         const token = jwt.sign(
             { id: user._id, role: user.role },
             process.env.JWT_SECRET,
@@ -32,9 +31,10 @@ const login = async (req, res) => {
         res.json({ token });
     } catch (err) {
         console.error('Error during login:', err);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error.' });
     }
 };
+
 
 
 
@@ -53,18 +53,19 @@ const register = async (req, res) => {
             return res.status(400).json({ error: 'Username already exists.' });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const user = new User({ username, password: hashedPassword, role });
+        // Save the password as plaintext
+        const user = new User({ username, password, role });
         await user.save();
 
         console.log('User stored in DB:', user);
-
         res.status(201).json({ message: 'User created successfully.' });
     } catch (err) {
         console.error('Error during registration:', err);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error.' });
     }
 };
+
+
 
 
 
