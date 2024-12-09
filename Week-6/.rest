@@ -1,0 +1,80 @@
+### Register a new admin user
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin1234",
+  "role": "admin"
+}
+
+###
+
+### Register a regular user
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "user1234",
+  "role": "regular"
+}
+
+###
+### Login as admin
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin1234"
+}
+
+###
+
+### Login as regular user
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "user1234"
+}
+
+###
+### Get all events (accessible to all authenticated users)
+GET http://localhost:3000/events
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTcyNzA4MzJhNmE5ZmE1Nzc4ZmI5MyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczMzc2NjA0OCwiZXhwIjoxNzMzNzY5NjQ4fQ.vzrA7Ns4PLHVBgDBGVxWecaqjvAuKOpEpow3jFE9ACU
+
+###
+### Get a single event by ID (replace `:id` with an actual event ID)
+GET http://localhost:3000/events/67571312b040b38fccc2f025
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTcxMWYzMWJlYzRlNjY0YjcyZjUzZSIsInJvbGUiOiJyZWd1bGFyIiwiaWF0IjoxNzMzNzU5NTY0LCJleHAiOjE3MzM3NjMxNjR9.jv_hMpBg9qZa9uXbcMXQa_ruki2z58_ikHe7B-3OVCs
+
+###
+POST http://localhost:3000/events
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTcxMTQwMmUwOGE0N2VmZjIyOTYwZCIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczMzc1OTU1MywiZXhwIjoxNzMzNzYzMTUzfQ.em6pSMhdMHzaaQd1dz1oeyIRByqtS44oIvM-xKX3pBs
+
+{
+  "title": "Project Deadline",
+  "date": "2024-12-15",
+  "location": "Tampere",
+  "description": "Final project submission"
+}
+
+###
+PUT http://localhost:3000/events/67571312b040b38fccc2f025
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTcyNzA4MzJhNmE5ZmE1Nzc4ZmI5MyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczMzc2NTM1NywiZXhwIjoxNzMzNzY4OTU3fQ.tZBUYkmAEfNW105zf_vBOxXKBYfofWm7vDEZHpbB0u8
+
+{
+  "title": "Updated Title",
+  "date": "2024-12-18",
+  "location": "Updated Location",
+  "description": "Updated Description"
+}
+
+###
+DELETE http://localhost:3000/events/67571312b040b38fccc2f025
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NTcyNzA4MzJhNmE5ZmE1Nzc4ZmI5MyIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTczMzc2NTM1NywiZXhwIjoxNzMzNzY4OTU3fQ.tZBUYkmAEfNW105zf_vBOxXKBYfofWm7vDEZHpbB0u8
