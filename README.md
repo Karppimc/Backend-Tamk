@@ -1,6 +1,6 @@
 # Backend-Tamk
 
-## This is for Tamk Backend development course
+## This is for Tamk Backend-development part of the Full-stack development course
 
 - Weekly excercises in their own folders
 
