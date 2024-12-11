@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authenticate = require('../middlewares/authenticate'); // Correct path to the middleware
+const authenticate = require('../middlewares/authenticate'); 
 const {
   getAllEvents,
   getEventById,
